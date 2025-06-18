@@ -6,7 +6,7 @@ author: |
   <small>MSB Medical School Berlin, 
   Max Planck Institute for Human Development, &
   Max Planck UCL Centre for Computational Psychiatry and Ageing Research </small>
-date: 'March 27, 2025'
+date: 'June 19, 2025'
 
 output:
   xaringan::moon_reader:
@@ -62,7 +62,7 @@ xaringanthemer::style_duo(
   )
 
 style_extra_css(css = list(
-  ".title" = list(background-image="url(\"unsplash/arthur-hinton-6YDn7__tato-unsplash.jpg\")"),
+#  ".title" = list(background_image="unsplash/arthur-hinton-6YDn7__tato-unsplash.jpg"),
   ".todo" = list(color = "#17C25B"),
                            ".optional" = list(color = "#05BCE6"),
                            ".large" = list(`font-size` = "130%"),
@@ -97,7 +97,7 @@ background-size: cover
 
 (+ measurement invariance + continuous time + reproducibility + ... )
 
-Roadmap
+<p style="color:white;">Roadmap</p>
 ---
 
 
@@ -136,7 +136,11 @@ $$-2LL = ln|\mathbf{\Sigma}|+tr\left(\mathbf{\Sigma^{-1} S} \right)-ln\left| \ma
 
 ---
 # Decision Trees
+<center>
+<img src="img/7214525854_41ea7719a4_o.jpg" >
 
+---
+# Decision Trees
 <center>
 <img src="img/coronary-tree.png" height="400px">
 
@@ -152,7 +156,7 @@ $$-2LL = ln|\mathbf{\Sigma}|+tr\left(\mathbf{\Sigma^{-1} S} \right)-ln\left| \ma
 class: inverse, center, middle
 # SEM Trees
 
-an instance of model-based recursive partitioning `r Citep(bib, c("zeileis2008model","brandmaier2013structural"))` 
+`r Citep(bib, c("brandmaier2013structural"))`; an instance of model-based recursive partitioning `r Citep(bib, c("zeileis2008model"))` 
 
 ---
 # Theory-guided exploration
@@ -243,6 +247,7 @@ Given a parametric model $M$ with ML parameter estimates $\hat{\theta}$ and data
 
 $$LR = -2LL \left( X_{1}|M(\hat{\theta}_1) \right)-2LL \left(X_{2}|M(\hat{\theta}_2) \right) + 2LL \left(X|\hat{\theta}) \right)$$
 which is asymptotically $\chi^2$-distributed if $H_0$ is true (i.e., no group differences) with $df = dim(\theta)$
+
 ---
 # Split selection
 
@@ -262,7 +267,7 @@ For $\chi^2$-based tests, instead of:
 $$LR = -2LL \left( X_{1}|M(\hat{\theta}_1) \right)-2LL \left(X_{2}|M(\hat{\theta}_2) \right) + 2LL \left(X|\hat{\theta}) \right)$$
 we estimate *loss of fit due to constraining only focus parameters* to identity across groups:
 
-$$ LR = -2LL \left( X_1 \mid M(\hat{\theta}_1) \right) -2LL \left( X_2 \mid M(\hat{\theta}_2) \right) -2LL \left( X_1 \mid M(\hat{\theta}'_1) \right) -2LL \left( X_2 \mid M(\hat{\theta}'_2) \right) $$
+$$ LR = -2LL \left( X_1 \mid M(\hat{\theta}_1) \right) -2LL \left( X_2 \mid M(\hat{\theta}_2) \right) \\ -2LL \left( X_1 \mid M(\hat{\theta}'_1) \right) -2LL \left( X_2 \mid M(\hat{\theta}'_2) \right) $$
 
 
 <!-- 
@@ -429,7 +434,6 @@ made with ❤ by `semtree`
 
 W/o focus: potentially interesting because differences in variances may also be of interest (e.g., meaningful individual differences or reliability differences)
 
-
 ---
 # Run a forest
 
@@ -558,6 +562,76 @@ plot(slope, xlim=c(0,50), main="Slope")
 
 ```
 
+---
+
+# Example: Negative Affect
+
+To illustrate, we look at the `affect` dataset from `psychTools`
+
+- Collection of pretest data using 5 scales from the Eysenck Personality Inventory and items taken from the Motivational State Questionnaire (see msq. In addition, state and trait anxiety measures were given. 
+
+- $n=330$ subjects were randomly assigned to one of four movie conditions: 1: Frontline. A documentary about the liberation of the Bergen-Belsen concentration camp. 2: Halloween. A horror film. 3: National Geographic, a nature film about the Serengeti plain. 4: Parenthood. A comedy. 
+
+- Data from the MSQ were scored for Energetic and Tense Arousal (EA and TA) as well as Positive and Negative Affect (PA and NA). 
+
+
+---
+
+# Compare party(kit) and SEM trees
+
+- We use the difference of NA from pre-test to post-test as outcome
+- Run a `partykit` model, a SEM tree with focus parameter on the mean of `DeltaNA` and one without focus parameters
+
+```{r out.height="30%"}
+load("filmtrees.rds")
+ggplot2::ggplot(tree.data, aes(x=DeltaNA))+geom_density()
+```
+
+---
+
+# Score-based tree (no constraints)
+
+```{r}
+load("filmtrees.rds")
+plot(tree)
+```
+---
+# Score-based tree (with focus-parameter)
+
+```{r}
+load("filmtrees.rds")
+plot(treeF)
+```
+
+(Identical split selection as `partykit` would do)
+---
+
+# Implied Multi-Group Model
+
+.pull-left[
+```{r}
+plot(pl1)
+```
+No Focus
+]
+
+.pull-right[
+```{r}
+plot(pl2)
+```
+With Focus / partykit
+]
+
+---
+
+# Forest with focus parameters
+
+```{r}
+load("filmforest.rds")
+plot(vim,aggregate = "median")
+```
+
+<small>100 score-based trees, median variable importance, all estimates are positive</small>
 ---
 
 # Journal Pricing
@@ -716,11 +790,11 @@ Continuous-Time Structural Equation Forests `r  Citep(bib, "cancer2025continuous
 
 ---
 
-# Recent Extensions - CT-SEM Forests (Cont'd)
+# Recent Extensions - CT-SEM Forests
 
 - relatively large type-I error rates in some conditions
 - variable importance estimates remain robust
-- excessive runtimes, e.g. study 1: `r 64*14.3` min for the forest and `r 64*0.6` min for the variable importance estimates (`N=1,000, 4 repeated measures, 15 predictors)
+- excessive runtimes, e.g. study 1: `r round(64*14.3,2)` min for the forest and `r round(64*0.6,2)` min for the variable importance estimates (N=1,000, 4 repeated measures, 15 predictors)
 
 ---
 
@@ -780,7 +854,7 @@ https://onyx-sem.com/ and [https://github.com/brandmaier/onyx](https://github.co
 ---
 # Thank You
 
-- Slides: https://github.com/brandmaier/focus-talk-dagstat2025
+- Slides: https://github.com/brandmaier/talk-fu2025-semtree
 
 - Package on CRAN: `semtree`
 
@@ -792,7 +866,7 @@ Contact: andreas.brandmaier@medicalschool-berlin.de or .strong[@brandmaier.bsky.
 .pull-right[
 
 ```{r, echo=FALSE}
-link <- "https://github.com/brandmaier/focus-talk-dagstat2025"
+link <- "https://github.com/brandmaier/talk-fu2025-semtree"
 ```
 
 ```{r, echo=FALSE, out.width = "30%", out.extra='style="float:center"'}
@@ -868,7 +942,7 @@ class: center, middle
 
 ![](img/reproducibleRchunks/schema-json-fingerprints.png) 
 
-(now on CRAN: reproducibleRchunks)
+(`r Citep(bib, "brandmaier2025automated")`, now on CRAN: reproducibleRchunks)
 
 ---
 # References

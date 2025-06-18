@@ -59,14 +59,14 @@ plot(ptree)
 
 # PLOT
 
-plot_tree_mix <- function(tree) {
+plot_tree_mix <- function(tree,xlim=c(-10, 10)) {
 
-tndata <- semtree::getTerminalNodes(tree)
+tndata <- semtree::getTerminalNodes(tree) 
 
 cols <- viridis::plasma(nrow(tndata))
 
-pl <- ggplot2::ggplot(data = data.frame(x = c(-20, 20)), ggplot2::aes(x))+
-  ggplot2::xlab("Change in Positive Affect")
+pl <- ggplot2::ggplot(data = data.frame(x = xlim), ggplot2::aes(x))+
+  ggplot2::xlab("Change in Negative Affect")
 
 for (i in 1:nrow(tndata)) {
   pl <- pl + ggplot2::stat_function(fun = dnorm, 
@@ -76,3 +76,18 @@ for (i in 1:nrow(tndata)) {
 return(pl)
 
 }
+
+pl1 <- plot_tree_mix(tree)
+pl2 <- plot_tree_mix(treeF)
+
+save(pl1,pl2,tree, treeF, tree.data,ptree, file="filmtrees.rds")
+
+# PART 4 ---------------
+
+forest = semforest( model = omx_model, 
+                 data = tree.data, 
+                 control=semtree::semforest_score_control(num.trees=100), constraints=semtree.constraints(focus.parameters="mean"))
+
+vim <- semtree::varimp(forest, method="permutationFocus")
+
+save(forest, vim, file="filmforest.rds")
