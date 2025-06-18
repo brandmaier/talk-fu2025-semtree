@@ -1,8 +1,11 @@
 ---
 title: "Focus! SEM Trees and Forests for Identifying Moderators in Structural Equation Models"
 subtitle: "FU Berlin 2025"  
-author: 
-  - "Andreas M. Brandmaier"
+author: | 
+  Andreas M. Brandmaier
+  <small>MSB Medical School Berlin, 
+  Max Planck Institute for Human Development, &
+  Max Planck UCL Centre for Computational Psychiatry and Ageing Research </small>
 date: 'March 27, 2025'
 
 output:
@@ -48,8 +51,6 @@ bib <- ReadBib("references.bib")
 ```{r xaringan-themer, include=FALSE, warning=FALSE}
 library(xaringanthemer)
 
-
-
 primary_color <- "#FFFFFF" #"#024959"
 secondary_color <- "#024959"#"#F2D605"
 xaringanthemer::style_duo(
@@ -60,7 +61,9 @@ xaringanthemer::style_duo(
   text_font_size = "1.5rem",
   )
 
-style_extra_css(css = list(".todo" = list(color = "#17C25B"),
+style_extra_css(css = list(
+  ".title" = list(background-image="url(\"unsplash/arthur-hinton-6YDn7__tato-unsplash.jpg\")"),
+  ".todo" = list(color = "#17C25B"),
                            ".optional" = list(color = "#05BCE6"),
                            ".large" = list(`font-size` = "130%"),
                            ".small" = list(`font-size` = "80%"),
@@ -82,15 +85,17 @@ library(qrcode)
 ```
 class: center middle
 
-# Question: “Given a (theory-based) multivariate model, which predictors/covariates/moderators are relevant?
+# Question: In a theory-driven multivariate model, which variables function as relevant predictors, covariates, or moderators?
 
 ---
 
-class: inverse center middle
-
+class: center middle
+background-image: url("unsplash/arthur-hinton-6YDn7__tato-unsplash.jpg")
+background-size: cover
 
 # SEM + Decision Trees + Focus Parameters + Random Forests + Variable Importance
 
+(+ measurement invariance + continuous time + reproducibility + ... )
 
 Roadmap
 ---
@@ -701,6 +706,22 @@ Permutation variable importance with focus parameters loadings:
 vim <- readRDS("data/06_bfi_vim.rds")
 plot(vim)
 ```
+---
+
+# Recent Extensions - CT-SEM Forests
+
+Continuous-Time Structural Equation Forests `r  Citep(bib, "cancer2025continuous")` 
+
+<center><img src="img/cancerfig1.png" style="height:400px" />
+
+---
+
+# Recent Extensions - CT-SEM Forests (Cont'd)
+
+- relatively large type-I error rates in some conditions
+- variable importance estimates remain robust
+- excessive runtimes, e.g. study 1: `r 64*14.3` min for the forest and `r 64*0.6` min for the variable importance estimates (`N=1,000, 4 repeated measures, 15 predictors)
+
 ---
 
 # Outlook I
