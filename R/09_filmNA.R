@@ -96,3 +96,11 @@ forest = semforest( model = omx_model,
 vim <- semtree::varimp(forest, method="permutationFocus")
 
 save(forest, vim, file="data/filmforest.rds")
+
+# Part 5 -----
+pdp_neur <- semtree::partialDependence(forest, tree.data, "neur")
+plot(pdp_neur, parameter = "mean")
+pdp_film <- semtree::partialDependence(forest, tree.data, "Film")
+plot(pdp_film, parameter = "mean")
+
+save(pdp_film, file="data/filmpdp.rds")

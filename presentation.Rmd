@@ -563,6 +563,13 @@ plot(slope, xlim=c(0,50), main="Slope")
 ```
 
 ---
+class: inverse middle center
+
+# Univariate Trees
+
+A comparison of _partykit_ and _semtree_ for predicting change in negative affect
+
+---
 
 # Example: Negative Affect
 
@@ -612,14 +619,14 @@ plot(treeF)
 ```{r}
 plot(pl1)
 ```
-No Focus
+No focus
 ]
 
 .pull-right[
 ```{r}
 plot(pl2)
 ```
-With Focus / partykit
+With focus on mean / partykit
 ]
 
 ---
@@ -633,10 +640,10 @@ plot(vim,aggregate = "median")
 
 <small>100 score-based trees, median variable importance, focus on mean, all estimates are positive</small>
 ---
-# Or focus on homogeneity only?!
+# ...or focus on homogeneity only?!
 
 Focus parameter on the _variance parameter only_:
-```{r}
+```{r fig.height=3, out.extra='style="max-height:300px;"'}
 load("data/filmtrees.rds")
 plot(pl3)
 ```
@@ -644,7 +651,23 @@ plot(pl3)
 Most homogeneous leaf: People who saw comedy/nature film and had NA1 < 0.9 basically were not affected by the films (low mean, low variance).
 
 ---
+# PDP
 
+Partial Dependence Plots across the SEM forest:
+
+```{r}
+load("data/filmpdp.rds")
+plot(pdp_film, parameter = "mean")
+```
+
+---
+class: inverse middle center
+
+# Regression Trees
+
+An example using a regression model of journal data
+
+---
 # Journal Pricing
 
 - The model to be partitioned is a linear regression for the number of library subscriptions by price per citation in log-log specification (i.e., with $k = 2$ coefficients) `r Citet(bib, c("zeileis2008model"))` 
