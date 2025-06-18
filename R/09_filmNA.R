@@ -48,6 +48,10 @@ treeF = semtree( model = omx_model,
                 data = tree.data, 
                 control=ctrl, constraints=semtree.constraints(focus.parameters="mean"))
 
+treeFvar = semtree( model = omx_model, 
+                 data = tree.data, 
+                 control=ctrl, constraints=semtree.constraints(focus.parameters="variance"))
+
 
 # PART 3 ---------------
 
@@ -79,8 +83,9 @@ return(pl)
 
 pl1 <- plot_tree_mix(tree)
 pl2 <- plot_tree_mix(treeF)
+pl3 <- plot_tree_mix(treeFvar)
 
-save(pl1,pl2,tree, treeF, tree.data,ptree, file="filmtrees.rds")
+save(pl1,pl2,pl3,tree, treeF, treeFvar, tree.data,ptree, file="data/filmtrees.rds")
 
 # PART 4 ---------------
 
@@ -90,4 +95,4 @@ forest = semforest( model = omx_model,
 
 vim <- semtree::varimp(forest, method="permutationFocus")
 
-save(forest, vim, file="filmforest.rds")
+save(forest, vim, file="data/filmforest.rds")

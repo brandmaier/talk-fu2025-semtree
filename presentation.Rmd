@@ -582,8 +582,8 @@ To illustrate, we look at the `affect` dataset from `psychTools`
 - We use the difference of NA from pre-test to post-test as outcome
 - Run a `partykit` model, a SEM tree with focus parameter on the mean of `DeltaNA` and one without focus parameters
 
-```{r out.height="30%"}
-load("filmtrees.rds")
+```{r fig.height=3, out.extra='style="max-height:300px;"'}
+load("data/filmtrees.rds")
 ggplot2::ggplot(tree.data, aes(x=DeltaNA))+geom_density()
 ```
 
@@ -592,14 +592,14 @@ ggplot2::ggplot(tree.data, aes(x=DeltaNA))+geom_density()
 # Score-based tree (no constraints)
 
 ```{r}
-load("filmtrees.rds")
+load("data/filmtrees.rds")
 plot(tree)
 ```
 ---
 # Score-based tree (with focus-parameter)
 
 ```{r}
-load("filmtrees.rds")
+load("data/filmtrees.rds")
 plot(treeF)
 ```
 
@@ -627,11 +627,22 @@ With Focus / partykit
 # Forest with focus parameters
 
 ```{r}
-load("filmforest.rds")
+load("data/filmforest.rds")
 plot(vim,aggregate = "median")
 ```
 
-<small>100 score-based trees, median variable importance, all estimates are positive</small>
+<small>100 score-based trees, median variable importance, focus on mean, all estimates are positive</small>
+---
+# Or focus on homogeneity only?!
+
+Focus parameter on the _variance parameter only_:
+```{r}
+load("data/filmtrees.rds")
+plot(pl3)
+```
+
+Most homogeneous leaf: People who saw comedy/nature film and had NA1 < 0.9 basically were not affected by the films (low mean, low variance).
+
 ---
 
 # Journal Pricing
@@ -676,7 +687,7 @@ plot(j_tree)
 
 Focus parameter on regression coefficient and constant:
 
-```{r out.height="80%"}
+```{r fig.height=3, out.extra='style="max-height:300px;"'}
 tree<-readRDS("data/02_tree_foc_2coef.rds")
 plot(tree)
 ```
