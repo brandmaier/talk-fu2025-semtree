@@ -325,22 +325,26 @@ In total, we need one more iterative optimization process per each potential spl
 
 # Variable Importance
 
-.pull-left[
+
 - Single trees are unstable
 - Subsample data and predictors to create a forest with diverse predictor combinations
 - Using a permutation approach, estimate contribution of each predictor to misfit `r Citep(bib,"brandmaier2016theory")`
-- ...but beware of marginal importance; `r Citep(bib,"strobl2008conditional")`
 
-]
 
-.pull-right[
+---
+# Example: Terminal Decline in Wellbeing
+
+<img src="img/soeptree.png" style="height: 30%; height: auto">
+
 .small[
 Example: Terminal decline of happiness from SOEP data `r Citep(bib,"brandmaier2017terminal")`
 ]
+---
+# Example: Terminal Decline in Wellbeing
 
-<img src="img/varimp-example-soep.png" style="width: 120%">
+<img src="img/varimp-example-soep.png" style="height: 50%; height:auto">
 
-]
+...but beware of marginal importance; `r Citep(bib,"strobl2008conditional")`
 
 
 ---
@@ -640,6 +644,16 @@ plot(vim,aggregate = "median")
 
 <small>100 score-based trees, median variable importance, focus on mean, all estimates are positive</small>
 ---
+# PDP
+
+Partial Dependence Plots marginalize over all other predictors:
+
+```{r}
+load("data/filmpdp.rds")
+plot(pdp_film, parameter = "mean")
+```
+
+---
 # ...or focus on homogeneity only?!
 
 Focus parameter on the _variance parameter only_:
@@ -649,16 +663,6 @@ plot(pl3)
 ```
 
 Most homogeneous leaf: People who saw comedy/nature film and had NA1 < 0.9 basically were not affected by the films (low mean, low variance).
-
----
-# PDP
-
-Partial Dependence Plots across the SEM forest:
-
-```{r}
-load("data/filmpdp.rds")
-plot(pdp_film, parameter = "mean")
-```
 
 ---
 class: inverse middle center
@@ -868,13 +872,29 @@ plot(ptree)
 ![](img/05_plot_mammo_partytree.png)
 ]
 ---
+class: inverse middle center
+# Reviewer 2
+
+---
+# Reviewer 2
+
+- Data mining and SEM make strange bedfellows. Admittedly, bad data mining practices could take over-fitting to a new, horrific level.
+--
+
+- Psychologists, with their obsession with their theories, are going to find data mining hard to grasp.
+--
+
+- SEM and trees are both tools that knotheads can use to move science backwards.
+
+---
 # Summary
 
 - SEM Trees and Forests are a form of model-based recursive partitioning
-- They can be implemented either via the `semtree` package or via `partykit` (https://www.zeileis.org/news/lavaantree/)
+- They can be implemented either via the `semtree` package
 - Offer a way to explore theory-driven SEM with variable importance and partial dependence plots
 - Focus parameters may be important when exploring the importance of predictors for subsets of parameters (e.g., individual differences vs means, or intercept vs slopes in growth models)
 - If you have a theory, test the theory first, then explore!
+- Should be obvious: No causal claims!
 
 ---
 
